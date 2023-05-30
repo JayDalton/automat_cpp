@@ -1,0 +1,14 @@
+{
+   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+   "name": "features",
+   "version-string": "0.1.0",
+   "supports": "windows",
+   "dependencies": [
+      "bext-sml",
+      {
+         "name": "boost-statechart",
+         "default-features": false,
+         "platform": "windows & x86"
+      }
+   ]
+}
