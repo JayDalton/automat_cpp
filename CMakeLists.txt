@@ -11,9 +11,11 @@ find_path(BEXT_SML_INCLUDE_DIRS "boost/sml.hpp")
 target_include_directories(${PROJECT_NAME} PRIVATE ${BEXT_SML_INCLUDE_DIRS})
 
 target_sources(${PROJECT_NAME} PRIVATE
-    # common.h
+    common.hpp
     # console.cpp
     # console.h
+    example01.hpp
+    example02.hpp
     main.cpp
 )
 
