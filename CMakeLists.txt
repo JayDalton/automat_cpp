@@ -7,14 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-# set( BEXT_SML_INCLUDE_DIRS "x86-windows/include/opencv" )
-# find_path(BEXT_SML_INCLUDE_DIRS "boost/sml.hpp")
-# target_include_directories(${PROJECT_NAME} PRIVATE ${BEXT_SML_INCLUDE_DIRS})
-
-# find_package(boost_statechart CONFIG REQUIRED)
-# find_package(boost_statechart CONFIG REQUIRED)
-find_package(Boost REQUIRED COMPONENTS statechart)
-target_link_libraries(${PROJECT_NAME} PRIVATE Boost::boost Boost::statechart)
+find_path(BEXT_SML_INCLUDE_DIRS "boost/sml.hpp")
+target_include_directories(${PROJECT_NAME} PRIVATE ${BEXT_SML_INCLUDE_DIRS})
 
 target_sources(${PROJECT_NAME} PRIVATE
     # common.h

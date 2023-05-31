@@ -5,10 +5,6 @@
    "supports": "windows",
    "dependencies": [
       "bext-sml",
-      {
-         "name": "boost-statechart",
-         "default-features": false,
-         "platform": "windows & x86"
-      }
+      "boost-statechart"
    ]
 }
