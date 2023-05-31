@@ -1,1 +1,1 @@
-# cpp_20_features
+# automat_cpp
