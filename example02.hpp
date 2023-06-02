@@ -15,9 +15,12 @@ namespace sc = boost::statechart;
 struct EvStartStop : sc::event< EvStartStop > {};
 struct EvReset : sc::event< EvReset > {};
 
+using clock = std::chrono::steady_clock;
+
 struct IElapsedTime
 {
   virtual double ElapsedTime() const = 0;
+  virtual auto Duration() const -> clock::duration = 0;
 };
 
 struct Active;
@@ -26,6 +29,11 @@ struct StopWatch : sc::state_machine< StopWatch, Active >
   double ElapsedTime() const
   {
     return state_cast< const IElapsedTime & >().ElapsedTime();
+  }
+
+  clock::duration Duration() const
+  {
+    return state_cast< const IElapsedTime & >().Duration();
   }
 };
 
@@ -40,8 +48,12 @@ struct Active : sc::simple_state< Active, StopWatch, Stopped >
   double ElapsedTime() const { return elapsedTime_; }
   double & ElapsedTime() { return elapsedTime_; }
 
+  clock::duration Duration() const { return duration; }
+  clock::duration & Duration() { return duration; }
+
   private:
     double elapsedTime_{0.0};
+    clock::duration duration{0};
 };
 
 // Stopped and Running both specify Active as their Context,
@@ -54,6 +66,7 @@ struct Running : IElapsedTime, sc::simple_state< Running, Active >
     ~Running()
     {
       context< Active >().ElapsedTime() = ElapsedTime();
+      context< Active >().Duration() = Duration();
     }
 
     double ElapsedTime() const override
@@ -61,8 +74,15 @@ struct Running : IElapsedTime, sc::simple_state< Running, Active >
       return context< Active >().ElapsedTime() +
         std::difftime( std::time( 0 ), startTime_ );
     }
+
+    auto Duration() const -> clock::duration override
+    {
+      return context< Active >().Duration() + (clock::now() - start);
+    }
+
   private:
     std::time_t startTime_{0};
+    clock::time_point start{ clock::now() };
 };
 
 struct Stopped : IElapsedTime, sc::simple_state< Stopped, Active > 
@@ -73,21 +93,31 @@ struct Stopped : IElapsedTime, sc::simple_state< Stopped, Active >
   {
     return context< Active >().ElapsedTime();
   }
+
+  auto Duration() const -> clock::duration override
+  {
+    return context< Active >().Duration();
+  }
 };
 
 int main()
 {
   StopWatch myWatch;
   myWatch.initiate();
-  print("{}\n", myWatch.ElapsedTime());
+  // print("{}\n", myWatch.ElapsedTime());
+  print("{}\n", myWatch.Duration());
   myWatch.process_event( EvStartStop() );
-  print("{}\n", myWatch.ElapsedTime());
+  // print("{}\n", myWatch.ElapsedTime());
+  print("{}\n", myWatch.Duration());
   myWatch.process_event( EvStartStop() );
-  print("{}\n", myWatch.ElapsedTime());
+  // print("{}\n", myWatch.ElapsedTime());
+  print("{}\n", myWatch.Duration());
   myWatch.process_event( EvStartStop() );
-  print("{}\n", myWatch.ElapsedTime());
+  // print("{}\n", myWatch.ElapsedTime());
+  print("{}\n", myWatch.Duration());
   myWatch.process_event( EvReset() );
-  print("{}\n", myWatch.ElapsedTime());
+  // print("{}\n", myWatch.ElapsedTime());
+  print("{}\n", myWatch.Duration());
   return 0;
 }
 
