@@ -5,6 +5,7 @@
    "supports": "windows",
    "dependencies": [
       "bext-sml",
+      "boost-asio",
       "boost-statechart"
    ]
 }

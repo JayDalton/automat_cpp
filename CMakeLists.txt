@@ -16,6 +16,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     # console.h
     example01.hpp
     example02.hpp
+    example03.hpp
     main.cpp
 )
 
