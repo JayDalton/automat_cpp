@@ -10,6 +10,10 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 find_path(BEXT_SML_INCLUDE_DIRS "boost/sml.hpp")
 target_include_directories(${PROJECT_NAME} PRIVATE ${BEXT_SML_INCLUDE_DIRS})
 
+find_package(pugixml CONFIG REQUIRED)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE pugixml::shared pugixml::pugixml)
+
 target_sources(${PROJECT_NAME} PRIVATE
     common.hpp
     # console.cpp

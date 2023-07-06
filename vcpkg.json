@@ -4,6 +4,7 @@
    "version-string": "0.1.0",
    "supports": "windows",
    "dependencies": [
+      "pugixml",
       "bext-sml",
       "boost-asio",
       "boost-statechart"
