@@ -8,6 +8,7 @@
 #include <ctime>
 #include <iostream>
 #include <iterator>
+#include <filesystem>
 #include <format>
 #include <future>
 #include <fstream>
@@ -31,3 +32,11 @@ void print(std::string_view format, Args&&... args)
 {
     std::cout << std::vformat(format, std::make_format_args(args...));
 }
+
+template<class... Ts>
+struct VariantVisitor : Ts... {
+    using Ts::operator()...;
+};
+
+template<class... Ts>
+VariantVisitor(Ts...) -> VariantVisitor<Ts...>;
