@@ -22,6 +22,9 @@ target_sources(${PROJECT_NAME} PRIVATE
     example02.hpp
     example03.hpp
     example04.hpp
+    example05.hpp
+    example06.hpp
+    example07.hpp
     main.cpp
     scheduler.hpp
     scheduler2.hpp

@@ -7,6 +7,7 @@
       "pugixml",
       "bext-sml",
       "boost-asio",
+      "boost-beast",
       "boost-statechart"
    ]
 }

@@ -2,39 +2,43 @@
 
 #include "common.hpp"
 
-// #include "scheduler.hpp"
-#include "scheduler2.hpp"
+#include <pugixml.hpp>
 
 namespace Example05
 {
 
-Task TaskA(Scheduler& sch) {
-  std::cout << "Hello from TaskA\n";
-  co_await sch.suspend();
-  std::cout << "Executing the TaskA\n";
-  co_await sch.suspend();
-  std::cout << "TaskA is finished\n";
-}
-
-Task TaskB(Scheduler& sch) {
-  std::cout << "Hello from TaskB\n";
-  co_await sch.suspend();
-  std::cout << "Executing the TaskB\n";
-  co_await sch.suspend();
-  std::cout << "TaskB is finished\n";
-}
-
 int main()
 {
-  Scheduler sch;
+    pugi::xml_document doc;
 
-  sch.emplace(TaskA(sch).get_handle());
-  sch.emplace(TaskB(sch).get_handle());
+    // get a test document
+    if (doc.load_string("<project><name>test</name><version>1.1</version><public>yes</public></project>"))
+    // if (doc.load_string("Hier steht Text aber kein XML."))
+    {
+      print("succuessful xml loading\n");
 
-  std::cout << "Start scheduling...\n";
+      pugi::xml_node project = doc.child("project");
 
-  sch.schedule();
-  sch.wait();
+      // tag::access[]
+      std::cout << "Project name: " << project.child("name").text().get() << std::endl;
+      std::cout << "Project version: " << project.child("version").text().as_double() << std::endl;
+      std::cout << "Project visibility: " << (project.child("public").text().as_bool(/* def= */ true) ? "public" : "private") << std::endl;
+      std::cout << "Project description: " << project.child("description").text().get() << std::endl;
+      // end::access[]
+
+      std::cout << std::endl;
+
+      // tag::modify[]
+      // change project version
+      project.child("version").text() = 1.2;
+
+      // add description element and set the contents
+      // note that we do not have to explicitly add the node_pcdata child
+      project.append_child("description").text().set("a test project");
+      // end::modify[]
+
+      doc.save(std::cout);
+    }
 
   return 0;
 }
