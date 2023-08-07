@@ -12,15 +12,9 @@
 #include "example06.hpp"
 #include "example07.hpp"
 #include "example08.hpp"
+#include "example09.hpp"
 
 int main()
 {
-  // Example01::main();
-  // Example02::main();
-  // Example03::main();
-  // Example04::main();
-  // Example05::main();
-  Example06::main();
-  // Example07::main();
-  // Example08::main();
+  Example09::main();
 }

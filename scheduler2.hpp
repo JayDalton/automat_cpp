@@ -90,6 +90,7 @@ void Scheduler::schedule() {
   for(auto task: _tasks) {
     _enqueue(task);
   }
+  wait(); // !?!
 }
 
 auto Scheduler::suspend() {
